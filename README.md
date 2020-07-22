@@ -38,7 +38,7 @@ Al iniciar sesión seguir los siguientes pasos:
 
 ### Paso 2. Capturar los datos de la petición
 
-Los siguientes datos a modificar se encuentran en ***src/test/java/io/fis/simulacion/client/api/ApiTest.java***
+Los siguientes datos a modificar se encuentran en ***src/test/java/io/fis/simulacion/mx/client/api/ApiTest.java***
 
 Es importante contar con el setUp() que se encargará de inicializar la url. Modificar la URL ***('the_url')***, como se muestra en el siguiente fragmento de código:
 
@@ -52,16 +52,56 @@ public void setUp() {
 }
 ```
 
-En el archivo **ApiTest.java**, que se encuentra en ***src/test/java/io/fis/simulacion/client/api/ApiTest.java*** se deberá modificar el siguiente fragmento de código con los datos correspondientes:
+En el archivo **ApiTest.java**, que se encuentra en ***src/test/java/io/fis/simulacion/mx/client/api/ApiTest.java*** se deberá modificar el siguiente fragmento de código con los datos correspondientes:
 
 ```java
+
 @Test
-public void getFisTest() throws ApiException {
-    // TO DO
-	}catch (ApiException e) {
-    // TO DO
-	}
+public void getReporteTest() throws ApiException {
     
+    String xApiKey = "your_api_key";
+    Integer estatusOK = 200;
+    Integer estatusNoContent = 204;
+    
+    PersonaPeticion persona = null;
+    DomicilioPeticion domicilio = null;
+    
+    try {
+        persona = new PersonaPeticion();
+        domicilio = new DomicilioPeticion();
+                    
+        persona.setApellidoPaterno("OLIVOS");
+        persona.setApellidoMaterno("JIMENEZ");
+        persona.setApellidoAdicional(null);
+        persona.setPrimerNombre("JUAN");
+        persona.setSegundoNombre(null);
+        persona.setFechaNacimiento("1966-05-13");
+        persona.setRFC("CUPU800825569");
+        
+        domicilio.setDireccion("san joaquin");
+        domicilio.setColoniaPoblacion("el arenal");
+        domicilio.setDelegacionMunicipio("iztapalapa");
+        domicilio.setCiudad("mexico");
+        domicilio.setEstado(CatalogoEstados.CDMX);
+        domicilio.setCP("12345");
+        
+        persona.setDomicilio(domicilio);
+        
+        ApiResponse<?>  response = api.getGenericScoreNoHitDG(xApiKey, persona);
+        
+        Assert.assertTrue(estatusOK.equals(response.getStatusCode()));
+        
+        if(estatusOK.equals(response.getStatusCode())) {
+            Respuesta responseOK = (Respuesta) response.getData();
+            logger.info(responseOK.toString());
+        }
+
+    } catch (ApiException e) {
+        if(!estatusNoContent.equals(e.getCode())) {
+            logger.info(e.getResponseBody());
+        }
+        Assert.assertTrue(estatusOK.equals(e.getCode()));           
+    }   
 }
 ```
 
