@@ -1,21 +1,50 @@
 package io.fis.simulacion.mx.client.model;
 
 import java.util.Objects;
-
+import java.util.Arrays;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
-
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.io.IOException;
 
 
 public class Respuesta {
-
+  @SerializedName("datosGenerales")
+  private Object datosGenerales = null;
+  @SerializedName("domicilio")
+  private Object domicilio = null;
   @SerializedName("scoreNoHit")
   private Object scoreNoHit = null;
   @SerializedName("folioConsulta")
   private String folioConsulta = null;
-
-  
-  
+  public Respuesta datosGenerales(Object datosGenerales) {
+    this.datosGenerales = datosGenerales;
+    return this;
+  }
+   
+  @ApiModelProperty(value = "Datos generales de la persona")
+  public Object getDatosGenerales() {
+    return datosGenerales;
+  }
+  public void setDatosGenerales(Object datosGenerales) {
+    this.datosGenerales = datosGenerales;
+  }
+  public Respuesta domicilio(Object domicilio) {
+    this.domicilio = domicilio;
+    return this;
+  }
+   
+  @ApiModelProperty(value = "Domicilio de la persona")
+  public Object getDomicilio() {
+    return domicilio;
+  }
+  public void setDomicilio(Object domicilio) {
+    this.domicilio = domicilio;
+  }
   public Respuesta scoreNoHit(Object scoreNoHit) {
     this.scoreNoHit = scoreNoHit;
     return this;
@@ -49,19 +78,22 @@ public class Respuesta {
       return false;
     }
     Respuesta respuesta = (Respuesta) o;
-    return 
+    return Objects.equals(this.datosGenerales, respuesta.datosGenerales) &&
+        Objects.equals(this.domicilio, respuesta.domicilio) &&
         Objects.equals(this.scoreNoHit, respuesta.scoreNoHit) &&
         Objects.equals(this.folioConsulta, respuesta.folioConsulta);
   }
   @Override
   public int hashCode() {
-    return Objects.hash(scoreNoHit, folioConsulta);
+    return Objects.hash(datosGenerales, domicilio, scoreNoHit, folioConsulta);
   }
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Respuesta {\n");
     
+    sb.append("    datosGenerales: ").append(toIndentedString(datosGenerales)).append("\n");
+    sb.append("    domicilio: ").append(toIndentedString(domicilio)).append("\n");
     sb.append("    scoreNoHit: ").append(toIndentedString(scoreNoHit)).append("\n");
     sb.append("    folioConsulta: ").append(toIndentedString(folioConsulta)).append("\n");
     sb.append("}");
